@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "anime-miko",
+    "slug": "anime-miko",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
