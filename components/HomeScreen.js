@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
 import AnimeList from '../components/AnimeList';
-import { fetchAnimeList } from '../components/api'; // Corrected import path
+import { fetchAnimeList } from '../components/api';
 
 const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -23,17 +23,20 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const handlePressItem = (animeId) => {
-    // Navigate to Details screen with animeId
     navigation.navigate('Details', { animeId });
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
         <AnimeList animeData={animeData} onPressItem={handlePressItem} />
       )}
+
+      <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+        <Text>Go to Settings</Text>
+      </TouchableOpacity>
     </View>
   );
 };

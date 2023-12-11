@@ -1,7 +1,6 @@
 package com.animemiko;
-
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Build;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -9,7 +8,6 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
 import expo.modules.ReactActivityDelegateWrapper;
-
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +26,8 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "main";
   }
-
+  @Overrideprotected void onCreate(BundlesavedInstanceState) 
+  {super.onCreate(null);}
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
    * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
