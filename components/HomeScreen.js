@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import AnimeList from '../components/AnimeList';
-import { fetchAnimeList } from './api';
+import { fetchAnimeList } from '../components/api'; // Corrected import path
 
 const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
 
   useEffect(() => {
-    // Fetch anime data using API
-    fetchAnimeList()
-      .then((data) => {
-        setAnimeData(data);
+    const fetchData = async () => {
+      try {
+        const data = await fetchAnimeList();
+        setAnimeData(data); // Modify this based on XML parsing
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error(error);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handlePressItem = (animeId) => {
