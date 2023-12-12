@@ -1,44 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, TouchableOpacity, Text } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, ActivityIndicator, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AnimeList from '../components/AnimeList';
-import { fetchAnimeList } from '../components/api';
 
 const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchAnimeList();
-        setAnimeData(data); // Modify this based on XML parsing
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await fetchAnimeList();
+      setAnimeData(data); 
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   }, []);
 
-  const handlePressItem = (animeId) => {
-    navigation.navigate('Details', { animeId });
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handlePressItem = (screenName, animeId) => {
+    if (screenName === 'Details') {
+      navigation.navigate(screenName, { animeId });
+    } else if (screenName === 'Settings') {
+      navigation.navigate(screenName);
+    }
   };
 
+  const navigateToSettings = () => {
+    navigation.navigate('Settings');
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={navigateToSettings} style={styles.headerButton}>
+          <Text style={styles.headerButtonText}>Settings</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
         <AnimeList animeData={animeData} onPressItem={handlePressItem} />
       )}
-
-      <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-        <Text>Go to Settings</Text>
-      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  headerButton: {
+    marginRight: 10,
+  },
+  headerButtonText: {
+    fontSize: 16,
+    color: 'blue',
+  },
+});
 
 export default HomeScreen;

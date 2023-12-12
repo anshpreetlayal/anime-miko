@@ -17,7 +17,6 @@ const AnimeList = ({ animeData, onPressItem }) => {
       { useNativeDriver: false }
     ),
     onPanResponderRelease: () => {
-      // Any logic after releasing the drag
     },
   });
 

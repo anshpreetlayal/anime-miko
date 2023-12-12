@@ -9,7 +9,6 @@ const AnimeDetails = ({ anime }) => {
       <Text>Genres: {anime.genres.join(', ')}</Text>
       <Text>Episodes: {anime.episodes}</Text>
       <Text>Rating: {anime.rating}</Text>
-      {/* Add more details as needed */}
     </View>
   );
 };
