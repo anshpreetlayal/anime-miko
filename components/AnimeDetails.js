@@ -1,44 +1,70 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { fetchAnimeList } from '../components/api';
+import { View, Text, ActivityIndicator, StyleSheet, Image, ScrollView } from 'react-native';
 
-const AnimeDetails = ({ anime }) => {
-  return (
-    <View>
-      <Text>Title: {anime.title}</Text>
-      <Text>Genres: {anime.genres.join(', ')}</Text>
-      <Text>Episodes: {anime.episodes}</Text>
-      <Text>Rating: {anime.rating}</Text>
-    </View>
-  );
-};
+const API_URL = 'https://api.jikan.moe/v4/anime?q=&sfw';
 
 const AnimeDetailsScreen = ({ route }) => {
   const [animeDetails, setAnimeDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDetails = async () => {
+    const animeId = route.params.animeId;
+    fetchAnimeDetails(animeId);
+
+    async function fetchAnimeDetails(animeId) {
       try {
-        const animeId = route.params.animeId;
-        const animeData = await fetchAnimeList(animeId); 
-        setAnimeDetails(animeData); 
+        const response = await fetch(`${API_URL}/${animeId}`); 
+        const data = await response.json();
+        setAnimeDetails(data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
-    };
-
-    fetchDetails();
+    }
   }, [route.params.animeId]);
 
   return (
-    <View>
-      {animeDetails ? (
-        <AnimeDetails anime={animeDetails} />
+    <View style={styles.container}>
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : animeDetails ? (
+        <ScrollView>
+          <Image source={{ uri: animeDetails.images.jpg.image_url }} style={styles.image} />
+          <Text style={styles.title}>{animeDetails.title}</Text>
+          <Text style={styles.info}>Episodes: {animeDetails.episodes}</Text>
+          <Text style={styles.info}>Type: {animeDetails.type}</Text>
+          <Text style={styles.info}>Status: {animeDetails.status}</Text>
+          <Text style={styles.info}>Rating: {animeDetails.rating}</Text>
+          <Text style={styles.info}>Synopsis: {animeDetails.synopsis}</Text>
+=        </ScrollView>
       ) : (
-        <Text>Loading...</Text>
+        <Text>No data available</Text>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  image: {
+    width: '100%',
+    height: 300,
+    resizeMode: 'cover',
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  info: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+});
 
 export default AnimeDetailsScreen;
