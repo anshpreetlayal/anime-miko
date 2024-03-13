@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, ActivityIndicator, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import AnimeList from '../components/AnimeList';
 
 const HomeScreen = ({ navigation }) => {
@@ -14,6 +14,7 @@ const HomeScreen = ({ navigation }) => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+      Alert.alert('Error', 'Failed to fetch anime data. Please try again later.');
     }
   }, []);
 
@@ -46,7 +47,12 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <ActivityIndicator size="large" />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" />
+          <Text style={styles.loadingText}>Loading...</Text>
+        </View>
+      ) : animeData.length === 0 ? (
+        <Text style={styles.noDataText}>No anime data available.</Text>
       ) : (
         <AnimeList animeData={animeData} onPressItem={handlePressItem} />
       )}
@@ -54,17 +60,4 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  headerButton: {
-    marginRight: 10,
-  },
-  headerButtonText: {
-    fontSize: 16,
-    color: 'blue',
-  },
-});
-
-export default HomeScreen;
+export default Homerscreen;
