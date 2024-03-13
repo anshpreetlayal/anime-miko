@@ -53,6 +53,50 @@ const IntroScreen = () => {
     });
   }, [navigation, navigateToHome, navigateToSettings]);
 
+  return (
+    <View style={styles.container}>
+      <Text style={styles.headerText}>
+        Step into anime-miko - Your gateway to an extensive collection of anime!
+      </Text>
+      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+        <Animated.Image
+          source={require('../assets/cowboybebop.png')}
+          style={[styles.image, { transform: [{ scale: pulseAnim }] }]}
+          resizeMode="contain"
+        />
+      </Animated.View>
+    </View>
+  );
+};
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingTop: 50,
+    paddingHorizontal: 20, // Added padding for better alignment
+  },
+  content: {
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%', // Adjusted image width to fit the screen
+    height: 300, // Adjusted image height to fit within the screen
+    marginBottom: 20,
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  headerButton: {
+    fontSize: 16,
+    paddingHorizontal: 10, // Added horizontal padding for better touch area
+    color: '#333', // Changed button color for better visibility
+  },
+});
 
 export default IntroScreen;
