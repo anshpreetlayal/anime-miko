@@ -59,5 +59,32 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  noDataText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  headerButton: {
+    marginRight: 10,
+  },
+  headerButtonText: {
+    fontSize: 16,
+    color: 'blue',
+  },
+});
 
-export default Homerscreen;
+export default HomeScreen;
