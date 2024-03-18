@@ -5,33 +5,29 @@ import IntroScreen from './components/IntroScreen';
 import HomeScreen from './components/HomeScreen';
 import SettingsScreen from './components/SettingsScreen';
 
-const Stack = createStackNavigator();
+const headerOptions = {
+  headerShown: true,
+  headerStyle: {
+    backgroundColor: '#8B4513',
+  },
+  headerTintColor: '#FFFFFF',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+    fontFamily: 'Georgia',
+  },
+};
+
+const introScreenOptions = {
+  ...headerOptions,
+  headerTitle: 'anime-miko',
+  headerTitleAlign: 'center',
+};
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="anime-miko"
-        screenOptions={{
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: '#8B4513',
-          },
-          headerTintColor: '#FFFFFF', 
-          headerTitleStyle: {
-            fontWeight: 'bold', 
-            fontFamily: 'Georgia', 
-          },
-        }}
-      >
-        <Stack.Screen
-          name="anime-miko"
-          component={IntroScreen}
-          options={{
-            headerTitle: 'anime-miko',
-            headerTitleAlign: 'center',
-          }}
-        />
+      <Stack.Navigator initialRouteName="anime-miko" screenOptions={headerOptions}>
+        <Stack.Screen name="anime-miko" component={IntroScreen} options={introScreenOptions} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       </Stack.Navigator>
@@ -39,4 +35,3 @@ const App = () => {
   );
 };
 
-export default App;
