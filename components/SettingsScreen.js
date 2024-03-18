@@ -36,6 +36,11 @@ const SettingsScreen = ({ navigation }) => {
     setModalVisible(false);
   };
 
+  const handleLogout = () => {
+  
+    navigation.navigate('HomeScreen'); 
+  };
+
   return (
     <View style={darkTheme ? styles.darkContainer : styles.lightContainer}>
       <Text style={styles.title}>Log In</Text>
@@ -76,6 +81,10 @@ const SettingsScreen = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+
+      <TouchableOpacity onPress={handleLogout}>
+        <Text style={styles.link}>Log Out</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -138,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsScre
+export default SettingsScreen;

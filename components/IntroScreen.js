@@ -76,14 +76,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingTop: 50,
-    paddingHorizontal: 20, // Added padding for better alignment
+    paddingHorizontal: 20, 
   },
   content: {
     alignItems: 'center',
   },
   image: {
-    width: '100%', // Adjusted image width to fit the screen
-    height: 300, // Adjusted image height to fit within the screen
+    width: '100%',
+    height: 300, 
     marginBottom: 20,
   },
   headerText: {
@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
   },
   headerButton: {
     fontSize: 16,
-    paddingHorizontal: 10, // Added horizontal padding for better touch area
-    color: '#333', // Changed button color for better visibility
+    paddingHorizontal: 10, 
+    color: '#333', 
   },
 });
 
