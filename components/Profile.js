@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
 
 const Profile = () => {
-  const [username, setUsername] = useState('JohnDoe'); // Initial username
+  const [username, setUsername] = useState(''); 
   const [editMode, setEditMode] = useState(false);
   const [newUsername, setNewUsername] = useState('');
 
