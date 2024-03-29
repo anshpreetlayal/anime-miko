@@ -5,7 +5,7 @@ const Watchlist = () => {
   return (
     <View>
       <Text>Watchlist Screen</Text>
-      {/* Add watchlist functionality here */}
+      {/* watchlist functionality here */}
     </View>
   );
 };
