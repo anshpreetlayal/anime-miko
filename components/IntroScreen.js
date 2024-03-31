@@ -7,14 +7,21 @@ const IntroScreen = () => {
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const navigation = useNavigation();
 
+  const navigateToHome = () => {
+    navigation.navigate('HomeScreen');
+  };
+
+  const navigateToSettings = () => {
+    navigation.navigate('SettingsScreen');
+  };
+
   useEffect(() => {
-    Animated.timing(fadeAnim, {
+    const fadeInAnimation = Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
       useNativeDriver: true,
-    }).start();
-
-    Animated.loop(
+    });
+    const pulseAnimation = Animated.loop(
       Animated.sequence([
         Animated.timing(pulseAnim, {
           toValue: 1.2,
@@ -27,16 +34,16 @@ const IntroScreen = () => {
           useNativeDriver: true,
         }),
       ])
-    ).start();
+    );
+
+    fadeInAnimation.start();
+    pulseAnimation.start();
+
+    return () => {
+      fadeInAnimation.stop();
+      pulseAnimation.stop();
+    };
   }, [fadeAnim, pulseAnim]);
-
-  const navigateToHome = () => {
-    navigation.navigate('HomeScreen');
-  };
-
-  const navigateToSettings = () => {
-    navigation.navigate('SettingsScreen');
-  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -76,14 +83,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingTop: 50,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   content: {
     alignItems: 'center',
   },
   image: {
     width: '100%',
-    height: 300, 
+    height: 300,
     marginBottom: 20,
   },
   headerText: {
@@ -94,8 +101,8 @@ const styles = StyleSheet.create({
   },
   headerButton: {
     fontSize: 16,
-    paddingHorizontal: 10, 
-    color: '#333', 
+    paddingHorizontal: 10,
+    color: '#333',
   },
 });
 
