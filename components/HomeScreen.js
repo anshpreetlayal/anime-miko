@@ -8,8 +8,12 @@ const HomeScreen = ({ navigation }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const data = await fetchAnimeList();
-      setAnimeData(data); 
+      const response = await fetch('https://api.jikan.moe/v4/anime?q=&sfw');
+      if (!response.ok) {
+        throw new Error('Failed to fetch anime data');
+      }
+      const data = await response.json();
+      setAnimeData(data.data); 
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -59,6 +63,7 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
