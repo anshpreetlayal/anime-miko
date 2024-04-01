@@ -1,53 +1,40 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, ActivityIndicator, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ActivityIndicator, Text, StyleSheet, Alert } from 'react-native';
 import AnimeList from '../components/AnimeList';
 
 const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [animeData, setAnimeData] = useState([]);
 
-  const fetchData = useCallback(async () => {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
     try {
       const response = await fetch('https://api.jikan.moe/v4/anime?q=&sfw');
       if (!response.ok) {
         throw new Error('Failed to fetch anime data');
       }
       const data = await response.json();
-      setAnimeData(data.data); 
+      setAnimeData(data.data);
       setLoading(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
       Alert.alert('Error', 'Failed to fetch anime data. Please try again later.');
     }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const handlePressItem = (screenName, animeId) => {
-    if (screenName === 'Details') {
-      navigation.navigate(screenName, { animeId });
-    } else if (screenName === 'Settings') {
-      navigation.navigate(screenName);
-    }
   };
 
-  const navigateToSettings = () => {
-    navigation.navigate('Settings');
+  const handlePressItem = (animeId) => {
+    navigation.navigate('AnimeDetailsScreen', { animeId });
   };
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={navigateToSettings} style={styles.headerButton}>
-          <Text style={styles.headerButtonText}>Settings</Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
+  const handleFavoritePress = (animeId) => {
+    console.log('Added to favorites:', animeId);
+    //  logic here to add the anime with ID animeId to the favorites list
+    //use state or AsyncStorage to store the favorites list
+  };
   return (
     <View style={styles.container}>
       {loading ? (
@@ -58,7 +45,11 @@ const HomeScreen = ({ navigation }) => {
       ) : animeData.length === 0 ? (
         <Text style={styles.noDataText}>No anime data available.</Text>
       ) : (
-        <AnimeList animeData={animeData} onPressItem={handlePressItem} />
+        <AnimeList
+          animeData={animeData}
+          onPressItem={handlePressItem}
+          onFavoritePress={handleFavoritePress}
+        />
       )}
     </View>
   );
@@ -82,13 +73,6 @@ const styles = StyleSheet.create({
   noDataText: {
     fontSize: 16,
     color: '#333',
-  },
-  headerButton: {
-    marginRight: 10,
-  },
-  headerButtonText: {
-    fontSize: 16,
-    color: 'blue',
   },
 });
 
