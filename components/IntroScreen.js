@@ -1,19 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const IntroScreen = () => {
+  const images = [
+    require('../assets/cowboybebop.png'),
+    require('../assets/'), 
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const navigation = useNavigation();
-
-  const navigateToHome = () => {
-    navigation.navigate('HomeScreen');
-  };
-
-  const navigateToSettings = () => {
-    navigation.navigate('SettingsScreen');
-  };
 
   useEffect(() => {
     const fadeInAnimation = Animated.timing(fadeAnim, {
@@ -39,26 +37,16 @@ const IntroScreen = () => {
     fadeInAnimation.start();
     pulseAnimation.start();
 
+    const slideshowTimer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000); // Change the interval as needed
+
     return () => {
       fadeInAnimation.stop();
       pulseAnimation.stop();
+      clearInterval(slideshowTimer);
     };
-  }, [fadeAnim, pulseAnim]);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <TouchableOpacity onPress={navigateToSettings}>
-          <Text style={styles.headerButton}>Settings</Text>
-        </TouchableOpacity>
-      ),
-      headerLeft: () => (
-        <TouchableOpacity onPress={navigateToHome}>
-          <Text style={styles.headerButton}>Home</Text>
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation, navigateToHome, navigateToSettings]);
+  }, [fadeAnim, pulseAnim, images.length]);
 
   return (
     <View style={styles.container}>
@@ -67,7 +55,7 @@ const IntroScreen = () => {
       </Text>
       <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
         <Animated.Image
-          source={require('../assets/cowboybebop.png')}
+          source={images[currentImageIndex]}
           style={[styles.image, { transform: [{ scale: pulseAnim }] }]}
           resizeMode="contain"
         />
@@ -98,11 +86,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-  },
-  headerButton: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    color: '#333',
   },
 });
 
