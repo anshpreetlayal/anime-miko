@@ -5,7 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 const IntroScreen = () => {
   const images = [
     require('../assets/cowboybebop.png'),
-    require('../assets/'), 
+    require('../assets/bsd.jpg'), 
+    require('../assets/chainsawman.jpg'),
+    require('../assets/ds.jpg'), 
+    require('../assets/hxh.jpg'),
+    require('../assets/jjk.jpg'),
+    require('../assets/nana.jpg'), 
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -39,7 +44,7 @@ const IntroScreen = () => {
 
     const slideshowTimer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); // Change the interval as needed
+    }, 3000); 
 
     return () => {
       fadeInAnimation.stop();
@@ -47,6 +52,42 @@ const IntroScreen = () => {
       clearInterval(slideshowTimer);
     };
   }, [fadeAnim, pulseAnim, images.length]);
+
+  const navigateToHome = () => {
+    navigation.navigate('HomeScreen');
+  };
+
+  const navigateToSettings = () => {
+    navigation.navigate('SettingsScreen');
+  };
+
+  useEffect(() => {
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity onPress={navigateToSettings}>
+        <Text style={styles.headerButton}>Settings</Text>
+      </TouchableOpacity>
+    ),
+    headerLeft: () => (
+      <TouchableOpacity onPress={navigateToHome}>
+        <Text style={styles.headerButton}>Home</Text>
+      </TouchableOpacity>
+    ),
+    headerStyle: {
+      backgroundColor: 'black',
+    },
+    headerTintColor: '#FFFFFF',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      color: '#FFFFFF',
+    },
+    headerTitleAlign: 'center',
+    headerTitle: () => (
+      <Text style={[styles.headerText, { color: 'pink' }]}>anime-miko</Text>
+    ),
+  });
+}, [navigation, navigateToHome, navigateToSettings]);
+
 
   return (
     <View style={styles.container}>
@@ -86,6 +127,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+    color: '#333',
+  },
+  headerButton: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    color: '#FFFF',
+    fontWeight: 'bold',
   },
 });
 
