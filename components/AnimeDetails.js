@@ -14,7 +14,7 @@ const AnimeDetailsScreen = ({ route }) => {
 
     async function fetchAnimeDetails(animeId) {
       try {
-        const response = await fetch(`${API_URL}/${animeId}`); 
+        const response = await fetch(`${API_URL}/${animeId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
