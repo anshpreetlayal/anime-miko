@@ -1,22 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Image, Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Animated, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const IntroScreen = () => {
   const images = [
     require('../assets/cowboybebop.png'),
-    require('../assets/bsd.jpg'), 
+    require('../assets/bsd.jpg'),
     require('../assets/chainsawman.jpg'),
-    require('../assets/ds.jpg'), 
+    require('../assets/ds.jpg'),
     require('../assets/hxh.jpg'),
     require('../assets/jjk.jpg'),
-    require('../assets/nana.jpg'), 
+    require('../assets/nana.jpg'),
   ];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const navigation = useNavigation();
+  const [animeData, setAnimeData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fadeInAnimation = Animated.timing(fadeAnim, {
@@ -42,9 +44,26 @@ const IntroScreen = () => {
     fadeInAnimation.start();
     pulseAnimation.start();
 
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.jikan.moe/v4/anime?q=&sfw');
+        if (!response.ok) {
+          throw new Error('Failed to fetch anime data');
+        }
+        const data = await response.json();
+        setAnimeData(data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
     const slideshowTimer = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000); 
+    }, 3000);
 
     return () => {
       fadeInAnimation.stop();
@@ -62,32 +81,31 @@ const IntroScreen = () => {
   };
 
   useEffect(() => {
-  navigation.setOptions({
-    headerRight: () => (
-      <TouchableOpacity onPress={navigateToSettings}>
-        <Text style={styles.headerButton}>Settings</Text>
-      </TouchableOpacity>
-    ),
-    headerLeft: () => (
-      <TouchableOpacity onPress={navigateToHome}>
-        <Text style={styles.headerButton}>Home</Text>
-      </TouchableOpacity>
-    ),
-    headerStyle: {
-      backgroundColor: 'black',
-    },
-    headerTintColor: '#FFFFFF',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      color: '#FFFFFF',
-    },
-    headerTitleAlign: 'center',
-    headerTitle: () => (
-      <Text style={[styles.headerText, { color: 'pink' }]}>anime-miko</Text>
-    ),
-  });
-}, [navigation, navigateToHome, navigateToSettings]);
-
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={navigateToSettings}>
+          <Text style={styles.headerButton}>Settings</Text>
+        </TouchableOpacity>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity onPress={navigateToHome}>
+          <Text style={styles.headerButton}>Home</Text>
+        </TouchableOpacity>
+      ),
+      headerStyle: {
+        backgroundColor: 'black',
+      },
+      headerTintColor: '#FFFFFF',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+      },
+      headerTitleAlign: 'center',
+      headerTitle: () => (
+        <Text style={[styles.headerText, { color: 'pink' }]}>anime-miko</Text>
+      ),
+    });
+  }, [navigation, navigateToHome, navigateToSettings]);
 
   return (
     <View style={styles.container}>
@@ -101,6 +119,13 @@ const IntroScreen = () => {
           resizeMode="contain"
         />
       </Animated.View>
+      <View style={styles.animeContainer}>
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <AnimeList animeData={animeData} onPressItem={() => navigateToHome()} />
+        )}
+      </View>
     </View>
   );
 };
@@ -134,6 +159,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: '#FFFF',
     fontWeight: 'bold',
+  },
+  animeContainer: {
+    flex: 1,
+    marginTop: 20,
+    width: '100%',
   },
 });
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import IntroScreen from './components/IntroScreen';
-import HomeScreen from './components/HomeScreen';
 import SettingsScreen from './components/SettingsScreen';
 import WatchlistScreen from './components/Watchlist';
 import AnimeDetailsScreen from './components/AnimeDetails';
@@ -33,7 +32,6 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="IntroScreen" screenOptions={headerOptions}>
         <Stack.Screen name="IntroScreen" component={IntroScreen} options={introScreenOptions} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
         <Stack.Screen name="WatchlistScreen" component={WatchlistScreen} />
         <Stack.Screen name="AnimeDetailsScreen" component={AnimeDetailsScreen} />
