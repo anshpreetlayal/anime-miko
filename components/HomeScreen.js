@@ -31,9 +31,10 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleFavoritePress = (animeId) => {
-    console.log('Added to favorites:', animeId);
-    // Add logic here to add the anime with ID animeId to the favorites list
-    // You can use state or AsyncStorage to store the favorites list
+    const animeToAdd = animeData.find((anime) => anime.id === animeId);
+    if (animeToAdd) {
+      setFavorites((prevFavorites) => [...prevFavorites, animeToAdd]);
+    }
   };
 
   return (
