@@ -1,4 +1,3 @@
-// AnimeList.js
 import React from 'react';
 import { FlatList, TouchableOpacity, Text, StyleSheet } from 'react-native';
 

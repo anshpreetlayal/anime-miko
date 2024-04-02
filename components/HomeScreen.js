@@ -32,9 +32,10 @@ const HomeScreen = ({ navigation }) => {
 
   const handleFavoritePress = (animeId) => {
     console.log('Added to favorites:', animeId);
-    //  logic here to add the anime with ID animeId to the favorites list
-    //use state or AsyncStorage to store the favorites list
+    // Add logic here to add the anime with ID animeId to the favorites list
+    // You can use state or AsyncStorage to store the favorites list
   };
+
   return (
     <View style={styles.container}>
       {loading ? (
